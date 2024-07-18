@@ -1,5 +1,5 @@
-#Those are the entries you can test when using Input_ORP.txt as an input file.
-#When prompted by the program, you can test PF01237 as an example. You should obtain the same results found in the 'Input_ORP_output' directory.
+#Those are the entries you can test when using 'Input_ORP.txt' as an input file.
+#When prompted by the program, you can test "PF01237" as an example. You should obtain the same results found in the 'Input_ORP_output' directory.
 
 #Entry			#Type of Entry / Entry Name 
 
