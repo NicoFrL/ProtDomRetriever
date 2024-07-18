@@ -1,0 +1,19 @@
+#Those are the entries you can test when using Input_ORP.txt as an input file.
+#When prompted by the program, you can test PF01237 as an example. You should obtain the same results found in the 'Input_ORP_output' directory.
+
+#Entry			#Type of Entry / Entry Name 
+
+IPR037239		#InterPro Superfamily / Oxysterol-binding protein superfamily
+IPR000648		#InterPro Family / Oxysterol-binding protein 
+IPR018494		#InterPro Conserved Site / Oxysterol-binding protein, conserved site
+
+SSF144000		#SUPERFAMILY / Oxysterol-binding protein-like 
+PTHR10972		#PANTHER / OXYSTEROL-BINDING PROTEIN-RELATED
+PF01237			#Pfam / Oxysterol-binding protein
+
+G3DSA:1.10.287.2720	#CATH-Gene3D  / no specific name - likely N-ter of OSBP domain 
+G3DSA:2.40.160.120	#CATH-Gene3D  / no specific name - likely center of OSBP domain
+G3DSA:3.30.70.3490	#CATH-Gene3D  / no specific name - likely C-ter of OSBP domain
+
+PS01013			#PROSITE patterns / Oxysterol-binding protein family signature
+
