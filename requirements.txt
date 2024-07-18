@@ -1,0 +1,121 @@
+# ProtDomRetriever requirements
+# Python 3.8+ is required
+
+# Required packages:
+# HTTP library for making API requests
+# ProtDomRetriever.py was tested with requests 2.31.0,
+# but should work with 2.25.1 or newer
+requests>=2.25.1
+
+# GUI library for file dialog (usually comes pre-installed with Python)
+# tkinter is usually included with Python installations and is not installed via pip.
+# If it's missing, follow the OS-specific instructions below
+# Recommended tkinter version: 8.6 or newer
+requests>=2.25.1
+
+
+# Installation and Virtual Environment Setup Instructions
+# (These instructions are comments and will not affect package installation)
+
+# Note: For most users, these detailed instructions are not necessary for simply installing the packages.
+# They are provided for educational purposes, troubleshooting, and for users who want to set up a specific Python environment.
+# If you're familiar with pip and virtual environments, you can simply run 'pip install -r requirements.txt' in your preferred environment.
+
+# 1. Check your Python versions:
+#    a. For macOS users:
+#       - Find all paths to your Python 3 installations:
+#         where python3
+#       - This will show you all executable paths, e.g.:
+#         /opt/homebrew/bin/python3 (if using Apple Silicon Mac)
+#         /usr/local/bin/python3 (if using Intel Mac)
+#         /usr/bin/python3
+#       - Check the version of a specific Python installation:
+#         /path/to/python3 --version
+#         Replace '/path/to/' with the actual path shown by the 'where' command
+#
+#    b. For Linux users:
+#       - Find the path to your Python 3 installation:
+#         which python3
+#       - This will show you the full path, e.g., /usr/bin/python3
+#       - For more detailed information, you can also use:
+#         whereis python3
+#       - Check the Python version:
+#         python3 --version
+#       - If you have multiple Python installations, you might want to use the full path:
+#         /path/to/python3 --version
+#       - Replace '/path/to/' with the actual path shown by the 'which' command
+#
+#    c. Default Python version (for all systems):
+#       python3 --version
+#
+#    d. For Homebrew users on macOS:
+#       - List all Homebrew-installed Python versions:
+#         brew list --versions | grep python
+#       - Check Python symlinks in Homebrew:
+#         ls -l $(brew --prefix)/bin/python*
+#
+#    Note: You might see multiple versions. Decide which one you want to use for this project.
+
+# 2. Create a virtual environment:
+#    a. For Homebrew users on macOS:
+#       - Identify the most recent Python version installed:
+#         brew list --versions | grep python | sort -V | tail -n 1
+#       - Create the virtual environment with the most recent version:
+#         "$(brew --prefix)/bin/python3" -m venv .venv
+#
+#    b. For other systems:
+#       python3 -m venv .venv
+#
+#    Note: It's recommended to use the most recent stable Python version
+#    for optimal performance and security.
+#
+#    If you need to use a specific version for compatibility reasons:
+#    /path/to/python3.X -m venv .venv
+#    Replace 'X' with the specific version number (e.g., 3.9, 3.10, etc.)
+
+# 3. Activate the environment:
+#    On macOS and Linux:
+#    source .venv/bin/activate
+#    On Windows:
+#    .venv\Scripts\activate
+#    Your prompt should change to indicate the active environment
+
+# 4. Verify the Python version in your virtual environment:
+#    python --version
+#    This should match the version you used to create the environment
+
+# 5. Install the requirements:
+#    pip install -r requirements.txt
+
+# 6. When done, deactivate the environment:
+#    deactivate
+
+# 7. For future use, reactivate the environment:
+#    On macOS and Linux:
+#    source .venv/bin/activate
+#    On Windows:
+#    .venv\Scripts\activate
+
+# Note on virtual environments:
+# - The name '.venv' is a common convention for project-specific virtual environments.
+# - You can create multiple environments for different projects, each with a unique name.
+# - The 'venv' in the creation command is the Python module, not the environment name.
+
+# IDE Integration:
+# Note: If you're using an IDE like PyCharm or VS Code, you can often create and manage
+# virtual environments directly through the IDE's interface.
+
+# For other operating systems:
+# The process is similar, but the paths and commands might differ.
+# Ensure you're using the correct Python version for your needs.
+
+# If tkinter is missing:
+# - macOS (Homebrew): brew install python-tk@X.Y  # Replace X.Y with your Python version
+# - Ubuntu/Debian: sudo apt-get install python3-tk
+# - Fedora: sudo dnf install python3-tkinter
+
+# Troubleshooting:
+# - If you encounter SSL certificate errors, ensure your Python installation has SSL support.
+# - For any other issues, check the project's GitHub issues page or contact the maintainers.
+
+# End of requirements and instructions
