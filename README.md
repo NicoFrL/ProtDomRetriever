@@ -2,6 +2,9 @@
 
 ProtDomRetriever is a simple Python tool for retrieving protein domain information from the InterPro database based on UniProtKB accessions and specified InterPro entries. It parses InterPro JSON data and retrieves domain positions from a protein dataset.
 
+Created by Nicolas-Frédéric Lipp, PhD.
+
+
 ## Features
 
 - Retrieve domain information for multiple UniProtKB accessions
@@ -65,3 +68,21 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+If you encounter any problems or have any questions, please open an issue on the GitHub repository.
+
+## Author
+
+Nicolas-Frédéric Lipp, PhD  
+https://github.com/NicoFrL
+
+## Acknowledgements
+
+This project was developed with the assistance of AI language models, which provided guidance on code structure, best practices, and documentation. The core algorithm and scientific approach were designed and implemented by the author.
+
