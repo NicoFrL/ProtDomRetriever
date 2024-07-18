@@ -1,0 +1,18 @@
+#Those are the entries you can test when using 'Input_Spectrin.txt' as an input file.
+#When prompted by the program, you can try these three entries successively in just one run: "cd00176", followed by "PF00435", and followed by "SM00150". You should obtain the same results as those stored in the 'Input_Spectrin_output' directory.
+#Then you can compare the previous example by using "IPR002017" as an entry in another run. Your results should match those in the 'Input_Spectrin_output1' directory.
+
+#Entry			#Type of Entry / Entry Name 
+
+IPR016343		#InterPro Family / Spectrin, beta subunit
+IPR002017		#InterPro repeat / Spectrin repeat
+IPR018159		#InterPro repeat / Spectrin/alpha-actinin
+
+SSF46966		#SUPERFAMILY entry / Spectrin repeat
+PF00435			#Pfam entry / Spectrin repeat
+SM00150			#SMART entry / Spectrin repeats
+
+G3DSA:1.20.58.60	#CATH-Gene3D  entry / no specific name - likely spectrum
+cd00176			#Conserved Domains entry / SPEC
+
+
