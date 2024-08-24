@@ -329,7 +329,7 @@ def main():
             tsv_writer.writerow(row)
 
             # Write to domain ranges file and update domain_ranges
-            if len(result) > 4:
+            if len(result) > 2:
                 domain_ranges[accession] = []
                 for i in range(2, len(result), 2):
                     start, end = result[i], result[i+1]
@@ -344,6 +344,7 @@ def main():
     if fetch_fasta == 'Y':
         job_id = submit_id_mapping(','.join(domain_ranges.keys()))
         print(f"Job submitted with ID: {job_id}")
+        print(f"URL: https://www.uniprot.org/id-mapping/uniprotkb/{job_id}/overview")
 
         print("Retrieving data... This may take a while.")
         status = check_job_status(job_id)
