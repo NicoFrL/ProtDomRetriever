@@ -90,16 +90,20 @@ def process_accession(accession, interpro_entries, results, max_domains):
         # Extract domain information for each InterPro entry
         domains_by_entry = extract_domains(payload, interpro_entries)
         
-        # Choose the entry with the longest total domain length
-        chosen_entry, chosen_domains = choose_best_entry(domains_by_entry)
+        # Choose the best non-overlapping domains across all entries
+        # Returns a formatted string showing which entries contributed which domains
+        # and the list of selected domains sorted by position
+        entry_string, chosen_domains = choose_best_domains(domains_by_entry, accession)
         
         # Update the maximum number of domains found across all proteins
+        # This is used to determine how many columns needed in the output
         update_max_domains(max_domains, chosen_domains)
         
-        # Prepare the result row for output
-        result_row = prepare_result_row(accession, chosen_entry, chosen_domains)
+        # Prepare the result row with accession, entry string (now shows domain distribution),
+        # and the chosen domains
+        result_row = prepare_result_row(accession, entry_string, chosen_domains)
         
-        # Store the result
+        # Store the result for this accession in the results dictionary
         results[accession] = result_row
     else:
         # If data fetch failed, store a placeholder result
@@ -148,21 +152,67 @@ def extract_domains(payload, interpro_entries):
     
     return domains_by_entry
 
-def choose_best_entry(domains_by_entry):
-    # Function to calculate coverage (largest span from start to end)
-    def get_coverage(domains):
-        if not domains:
-            return 0
-        min_start = min(start for start, _ in domains)
-        max_end = max(end for _, end in domains)
-        return max_end - min_start
+def choose_best_domains(domains_by_entry, accession):  # Add accession parameter:
+    """
+    Select the best domains across all entries, taking the longest when there's overlap
+    """
+    # Collect all domains from all entries with their source
+    all_domains = []
+    entries_by_domain = {}  # To track which entry each domain came from
     
-    # Choose entry with largest coverage
-    chosen_entry = max(domains_by_entry, key=lambda x: get_coverage(domains_by_entry[x]))
+    for entry, domains in domains_by_entry.items():
+        for domain in domains:
+            all_domains.append(domain)
+            entries_by_domain[domain] = entry
+
+    # Sort domains by length (longest first)
+    all_domains.sort(key=lambda x: x[1] - x[0], reverse=True)
     
-    logger.info(f"Selected entry {chosen_entry} with domains {domains_by_entry[chosen_entry]}")
+    # Final selected domains and their entries
+    selected_domains = []
+    entry_domain_map = {}  # Map entries to their domain numbers
+    domain_counter = 1  # To give each domain a unique number
     
-    return chosen_entry, domains_by_entry[chosen_entry]
+    def domains_overlap(d1, d2):
+        return not (d1[1] < d2[0] or d1[0] > d2[1])
+
+    for domain in all_domains:
+        # Check if this domain overlaps with any selected domain
+        overlap = False
+        for selected in selected_domains:
+            if domains_overlap(domain, selected):
+                overlap = True
+                break
+        
+        if not overlap:
+            selected_domains.append(domain)
+            entry = entries_by_domain[domain]
+            if entry not in entry_domain_map:
+                entry_domain_map[entry] = []
+            entry_domain_map[entry].append(f"d{domain_counter}")
+            domain_counter += 1
+
+    # Format the entry string with domain numbers
+    entry_parts = []
+    for entry, domains in entry_domain_map.items():
+        ranges = []
+        for domain in domains:
+            # Get the index of this domain (remove 'd' and convert to int - 1)
+            idx = int(domain[1:]) - 1
+            # Get the actual range
+            start, end = selected_domains[idx]
+            ranges.append(f"{domain}:[{start}, {end}]")
+        entry_parts.append(f"{entry} ({','.join(ranges)})")
+    
+    entry_string = " + ".join(entry_parts)
+    
+    # Include the accession number in the log message
+    if selected_domains:  # Only add accession if we found domains
+        logger.info(f"Selected domains from entries: {entry_string} in {accession}")
+    else:
+        logger.info(f"No domains found for {accession}")
+    
+    return entry_string, selected_domains
 
 def update_max_domains(max_domains, chosen_domains):
     # Update the maximum number of domains found across all proteins
