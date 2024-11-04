@@ -11,8 +11,18 @@ requests>=2.25.1
 # tkinter is usually included with Python installations and is not installed via pip.
 # If it's missing, follow the OS-specific instructions below
 # Recommended tkinter version: 8.6 or newer
-requests>=2.25.1
 
+# Note for macOS users:
+# You might see a message like:
+# "Python[XXXXX:XXXXX] +[IMKInputSession subclass]: chose IMKInputSession_Legacy"
+# This is a harmless macOS-specific diagnostic message related to the input method system
+# when using tkinter. It does not affect the program's functionality and can be safely ignored.
+
+
+# Note: The following are used from Python's standard library (no installation needed):
+# - logging: for error and info logging
+# - threading: for parallel processing
+# - queue: for managing concurrent tasks
 
 # Installation and Virtual Environment Setup Instructions
 # (These instructions are comments and will not affect package installation)
@@ -116,6 +126,6 @@ requests>=2.25.1
 
 # Troubleshooting:
 # - If you encounter SSL certificate errors, ensure your Python installation has SSL support.
-# - For any other issues, check the project's GitHub issues page or contact the maintainers.
+# - For any other issues, check the project's GitHub issues page or pull a request.
 
 # End of requirements and instructions
