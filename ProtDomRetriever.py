@@ -6,8 +6,17 @@ import sys
 import csv
 import requests
 import time
+import logging
 from queue import Queue
 from threading import Thread
+
+# Logging Setup:
+# - Configure logging to display messages with timestamp and severity level
+# - Show all logs of level INFO and above (INFO, WARNING, ERROR, CRITICAL)
+# - Will output to console/stderr by default
+# - Create a logger instance named after this module for better traceability
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Maximum number of parallel requests allowed by the InterPro API
 # This limit is set to comply with InterPro's usage guidelines and prevent overloading their servers
@@ -140,16 +149,19 @@ def extract_domains(payload, interpro_entries):
     return domains_by_entry
 
 def choose_best_entry(domains_by_entry):
-# Choose the InterPro entry with the longest total domain length
-    chosen_entry = max(domains_by_entry, key=lambda x: sum(end - start for start, end in domains_by_entry[x]) if domains_by_entry[x] else 0)
-    # Explanation of the lambda function:
-    # For each entry 'x' in domains_by_entry:
-    #   1. Calculate the length of each domain: (end - start)
-    #   2. Sum up all domain lengths for this entry
-    #   3. If the entry has no domains, use 0 as the total length
-    # The max() function then selects the entry with the largest total domain length
-
-    # Return the chosen entry and its corresponding domains
+    # Function to calculate coverage (largest span from start to end)
+    def get_coverage(domains):
+        if not domains:
+            return 0
+        min_start = min(start for start, _ in domains)
+        max_end = max(end for _, end in domains)
+        return max_end - min_start
+    
+    # Choose entry with largest coverage
+    chosen_entry = max(domains_by_entry, key=lambda x: get_coverage(domains_by_entry[x]))
+    
+    logger.info(f"Selected entry {chosen_entry} with domains {domains_by_entry[chosen_entry]}")
+    
     return chosen_entry, domains_by_entry[chosen_entry]
 
 def update_max_domains(max_domains, chosen_domains):
@@ -205,9 +217,10 @@ def get_job_results(job_id):
     details_url = f"https://rest.uniprot.org/idmapping/details/{job_id}"
     response = requests.get(details_url)
     details = response.json()
+    # Error handling: Log and display error if redirect URL is missing from API response
     if 'redirectURL' not in details:
-        print("Error: Couldn't get job results. Please check manually:")
-        print(f"https://www.uniprot.org/id-mapping/uniprotkb/{job_id}/overview")
+        logger.error("Error: Couldn't get job results. Please check manually:")
+        logger.error(f"https://www.uniprot.org/id-mapping/uniprotkb/{job_id}/overview")
         return None
     
     results_url = details['redirectURL']
@@ -215,8 +228,37 @@ def get_job_results(job_id):
         'format': 'fasta',
         'size': '500'
     }
-    response = requests.get(results_url, params=params)
-    return response.text
+    # Initialize variable to store all results from potentially multiple pages
+    all_results = ""
+    while True:
+        # Make HTTP request and handle potential errors
+        response = requests.get(results_url, params=params)
+        if response.status_code != 200:
+            logger.error(f"Error fetching results: HTTP {response.status_code}")
+            return None
+        # Get content from current page
+        page_content = response.text
+        if not page_content.strip():
+            break  # No more results
+        
+        all_results += page_content
+        
+        # Check if there are more results (Check for pagination: are there more pages?)
+        if 'Link' in response.headers:
+            next_link = [link.strip() for link in response.headers['Link'].split(',') if 'next' in link]
+            if next_link:
+                results_url = next_link[0].split(';')[0].strip('<>')
+            else:
+                break
+        else:
+            break
+    # Log appropriate messages about the results
+    if not all_results:
+        logger.warning("No results were fetched. The output file may be empty.")
+    else:
+        logger.info("Successfully fetched all results")
+    
+    return all_results
 
 def parse_fasta(fasta_content, domain_ranges):
     sequences = {}
@@ -235,22 +277,23 @@ def parse_fasta(fasta_content, domain_ranges):
     if current_accession:
         sequences[current_accession] = current_sequence
 
+    logger.info(f"Parsed {len(sequences)} sequences from FASTA content") # Log how many sequences are found
+
     domain_sequences = {}
     for accession, ranges in domain_ranges.items():
         if accession in sequences:
             for start, end in ranges:
-                domain_sequences[f"{accession}[{start}-{end}]"] = sequences[accession][int(start)-1:int(end)]
+                try:
+                    domain_key = f"{accession}[{start}-{end}]" # Create the domain key (like "P12345[10-50]")
+                    domain_sequences[domain_key] = sequences[accession][int(start)-1:int(end)] # Try to extract the sequence
+                    logger.info(f"Extracted domain {domain_key}") # Log success
+                except IndexError:
+                    logger.warning(f"Failed to extract domain {accession}[{start}-{end}]: Index out of range") # Log when the start/end positions are invalid
+        else:
+            logger.warning(f"Accession {accession} not found in FASTA content")  # Log when the accession number isn't found
 
+    logger.info(f"Extracted {len(domain_sequences)} domain sequences")
     return domain_sequences
-
-def prepare_result_row(accession, chosen_entry, chosen_domains):
-    result_row = [accession, chosen_entry]
-    if chosen_domains:
-        for domain in chosen_domains:
-            result_row.extend(domain)
-    else:
-        result_row.extend(["N/A", "N/A"])
-    return result_row
 
 def main():
     # Select input file
