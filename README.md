@@ -69,10 +69,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## Support
 
 If you encounter any problems or have any questions, please open an issue on the GitHub repository.
