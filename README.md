@@ -23,7 +23,7 @@ Created by Nicolas-Frédéric Lipp, PhD.
 ## Installation
 
 1. Clone this repository:
-   git clone https://github.com/yourusername/ProtDomRetriever.git
+   git clone https://github.com/NicoFrL/ProtDomRetriever.git
 2. Navigate to the project directory:
    cd ProtDomRetriever
 3. Install required packages:
