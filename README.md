@@ -33,7 +33,7 @@ Created by Nicolas-Frédéric Lipp, PhD.
 
 Run the script using Python:
 
-python ProtDomRetriever.py
+python3 ProtDomRetriever.py
 
 Follow the on-screen prompts to:
 1. Select an input file containing UniProtKB accessions
@@ -79,5 +79,5 @@ Nicolas-Frédéric Lipp, PhD
 https://github.com/NicoFrL
 
 ## Development Notes
-This project was developed with the assistance of AI language models, which provided guidance on code structure, best practices, and documentation. The core algorithm and scientific approach were designed and implemented by the author.
+This project was developed with the assistance of AI language models, which provided guidance on code structure, best practices, and documentation. The core algorithm and scientific approach were designed and implemented by the author on the basis of InterPro documentation.
 
