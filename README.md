@@ -1,6 +1,6 @@
 # ProtDomRetriever
 
-ProtDomRetriever is a simple Python tool for retrieving protein domain information from the InterPro database based on UniProtKB accessions and specified InterPro entries. The script utilizes the application programming interface (API) of Interpro, extracts the position of every domain for each entry and selects the longest domain if multiple entries overlap. Facultatively the program returns a trimmed fasta file imported from UniProt. The program allows the retrieval of multiple domains in tandem if any, and it attributes a domain number to the uniprot accession code.
+ProtDomRetriever is a simple Python tool for retrieving protein domain information from the InterPro database based on UniProtKB accessions and specified InterPro entries. The script utilizes the application programming interface (API) of InterPro, extracts the position of every domain for each entry and selects the longest domain if multiple entries overlap. Facultatively the program returns a trimmed fasta file imported from UniProt. The program allows the retrieval of multiple domains in tandem if any, and it attributes a domain number to the uniprot accession code.
 
 Created by Nicolas-Frédéric Lipp, PhD.
 
