@@ -67,7 +67,11 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## License
+
+This project is distributed under **a Custom Academic and Non-Commercial License**.  
+It is free to use for educational, research, and non-profit purposes.  
+For commercial use, please refer to the [LICENSE](./LICENSE) file or contact the author for more information.
 
 ## Support
 
